@@ -1,0 +1,26 @@
+{% extends "peliculas/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1>Películas</h1>
+    <section class="container">
+        <form action="{% url 'registrarpelicula' %}" method="post">
+            <!--Esto es para evitar el cross site request forgery-->
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Titulo</label>
+                <input autofocus class="form-control" type="text" name="title" placeholder="Titulo de la película">
+            </div>
+            <div class="form-group">
+                <label for="year">Año</label>
+                <input class="form-control" type="number" name="year" min = "1985" max="2023" placeholder="formato: YYYY">
+            </div>
+            <div class="form-group">
+                <label for="director">Director</label>
+                <input class="form-control" type="text" name="director" placeholder="nombre del director">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Guardar">
+        </form>
+    </section>
+
+{% endblock %}

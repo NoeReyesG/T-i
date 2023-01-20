@@ -1,0 +1,23 @@
+{% extends "peliculas/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1>Registrar persona</h1>
+    <section class="container">
+        <form action="{% url 'registrarpersona' %}" method="post">
+            <!--Esto es para evitar el cross site request forgery-->
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input class="form-control" type="text" name="nombre" placeholder="Nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Año de nacimiento</label>
+                <input class="form-control" type="number" name="year" min = "1750" max="2023" placeholder="formato: YYYY" required>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Guardar">
+        </form>
+    </section>
+
+{% endblock %}
