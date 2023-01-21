@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .models import Movies, People, Directors, Ratings, Stars
 # Create your views here.
 
 def index(request):
