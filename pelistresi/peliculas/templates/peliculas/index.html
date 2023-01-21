@@ -3,16 +3,55 @@
 
 {% block body %}
 <h1>Películas</h1>
-    <form action="{% url 'index'%}" method="post">
-        <!--Esto es para evitar el cross site request forgery-->
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
+    <section class="container">
+        <form action="{% url 'index'%}" method="post">
+            <!--Esto es para evitar el cross site request forgery-->
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="buscarpor" id="buscarporl">Buscar película por:</label>
+                <select class="form-control" id="buscarpor" name="buscarpor">
+                    <option value="0" selected="selected">Titulo</option>
+                    <option value="1">Actor</option>
+                    <option value="2">Director</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="buscar" id="buscarl">Ingresa el título:</label>
+                <input autofocus class="form-control" type="text" name="buscar" id="buscar" placeholder="Busqueda...">
+            </div>
+            <input class="button" type="submit" value="Buscar">
+        </form>
+        <hr style="background-color:white">
+    </section>
+    <br>
+    
+    <section class="container">
+        <!--Si el resultado de una busqueda fue exitoso-->
+        {% if resultado %}
+        <ul>
+            <li><b>Film: </b>{{ resultado.titulo }}</li>
+            <li><b>Director: </b>{{ resultado.director }}</li>
+            <!--Si la pelicula tiene calificación-->
+            {%if resultado.rating %}
+                <li><b>Rating: </b>{{ resultado.rating }} <b>de</b> {{resultado.votos}} votos</li>
+            {% else %}
+                <li><b>Rating: </b> En espera...</li>
+            {% endif %}
+        </ul>
+        <h3>Actores</h3>
+            <ul>
+            {% for actor in actores %}
+                <li>{{ actor.person.name }}</li>
+            {% endfor %}
+            </ul>
+        <!--Si el resultado de la busqueda no fue exitoso-->    
+        {% else %}
+            <h3>Sin resultados</h3>
+        {% endif %}
+    </section>
 
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'peliculas/index.js' %}"></script>
 {% endblock %}

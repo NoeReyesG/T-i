@@ -7,10 +7,13 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
+# Modelo que equivale a tabla de peliculas 
 class Movies(models.Model):
     title = models.TextField()
-    year = models.IntegerField(blank=True, null=True)  
+    year = models.IntegerField(blank=True, null=True) 
+
+    def serialize(self):
+        return{ "titulo": self.title }
     
 class People(models.Model):
     name = models.TextField()
@@ -21,6 +24,8 @@ class Directors(models.Model):
     movie = models.ForeignKey('Movies', on_delete=models.CASCADE, default=None)
     person = models.ForeignKey('People', on_delete=models.CASCADE, default=None)
 
+    def serialize(self):
+        return{ "director": self.person.name }
 
 class Ratings(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE, default=None)
@@ -31,4 +36,7 @@ class Ratings(models.Model):
 class Stars(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE, default=None)
     person = models.ForeignKey(People, on_delete=models.CASCADE, default=None)
+
+    def serialize(self):
+        return{ "actor": self.person.name }
 

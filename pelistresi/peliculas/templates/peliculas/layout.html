@@ -20,18 +20,22 @@
 </head>
 
 <body>
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'registrarpersona'%}">Registrar persona</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'registrarpelicula' %}">Registrar película</a>
-        </li>
-    </ul>
+
+    <div class="header">{% block content %}{% endblock content %}</div>
+    <nav>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'registrarpersona'%}">Registrar persona</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'registrarpelicula' %}">Registrar película</a>
+            </li>
+        </ul>
+    </nav>
     {% block body %}
     {% endblock %}    
 </body>
