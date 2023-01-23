@@ -1,13 +1,24 @@
 body{
     background: linear-gradient(135deg, #000428, #004e92);
+    font-family: "Lora", sans-serif;
 }
 h1{
-    padding: 20px;
+    padding: 10px;
     text-align: center;
+    color:#d4aa00;
+}
+h3{
+    padding: 20px;
+    color:white;
+    text-align: center;
+}
+h4{
+    padding: 10px;
     color:white;
 }
+
 label{
-    color: white;
+    color: #d4aa00;
     font-size: large;
 }
 
@@ -15,31 +26,75 @@ ul li {
     color:white;    
 }
 
-h3{
+h2{
     color: white;
 }
 
 a{
     color:#d4aa00;
 }
+a:hover{
+    color:white;
+}
 .header{
-    height: 200px;
+    height: 70px;
+    background-color: white;
 }
 nav{
     background-color: #000428;
+    height: 50px;
 }
 
 
 .button{
+    margin-top: 5px;
     background-color:#ffcc00;
     border-color: #ffcc00;
-    border-radius: 20px;
     color:#000428;
     font-weight: 700;
-    height: 40px;
+    height: 30px;
     width: 130px;
+    opacity: 1;
 }
 .button:hover{
     background-color:#d4aa00;
     border-color: #ffcc00;
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-color: white;
+    border-style: inset;
+    margin-bottom: 10px;
+}
+.acciones{
+    place-self: end center;
+}
+
+.eliminaractor{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: #dc3545;
+    border-color:  #dc3545;
+    color:white;
+    font-weight: 700;
+    height: 20px;
+    width: 65px;
+    opacity: 1;
+    display:none;
+    font-size: x-small;   
+}
+
+.derecha{
+    display: flex;
+    justify-content: flex-end;
+}
+
+hr{
+    background-color: white;
+}
+
+.buscaractor{
+    margin-bottom: 10px;
+    display:none;
 }
