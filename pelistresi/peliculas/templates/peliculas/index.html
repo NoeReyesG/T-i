@@ -24,7 +24,7 @@
         <hr>
         <!--Alerta al eliminar un registro-->
         {% if message1 %}
-            <div class="alert alert-primary" role="alert">{{message1}}</div>
+            <div class="alert alert-primary" id="alerta" role="alert">{{message1}}</div>
         {% endif %}
     </section>
     
@@ -76,8 +76,8 @@
                 <ul id="actors{{resultado.0.id}}">    
                 {% for actor in resultado.1 %}
                     <form  action="{% url 'eliminar_star' actor.id resultado.0.id %}">
-                    <li><input type="text" class="form-control" readonly="readonly" value="{{ actor.name }}" style="background-color:#000428; color: white;"></li>
-                    <input class="eliminaractor" data-id={{actor.id}} type="submit" style="display:none" value="&times; eliminar">
+                    <li><input type="text" data-id={{actor.id}} class="form-control" readonly="readonly" value="{{ actor.name }}" style="background-color:#000428; color: white;"></li>
+                    <input class="eliminaractor"  type="submit" style="display:none" value="&times; eliminar">
                     </form>
                 {% endfor %}
                 </ul>

@@ -69,51 +69,71 @@ def eliminar(request, movie_id):
         })
     except:
         return render(request, "peliculas/index.html", {
-                "message1": "¡Lo sentimos, algo salió mal!"
+                "error": "¡Lo sentimos, algo salió mal!"
             })        
     
 # Ruta para quitar a un actor de una película
 @csrf_exempt    
 def eliminar_star(request, person_id, movie_id):
     # buscamos la relación
-    person = People.objects.filter(pk=person_id)
-    movie = Movies.objects.filter(pk=movie_id)
-    print(person[0].name)
-    print(movie[0].title)
-    
-    return JsonResponse({
-        "message2":"todo bien"
-        }, status=201)
+    if request.method == 'PUT':
+        person = People.objects.get(pk=person_id)
+        movie = Movies.objects.get(pk=movie_id)
+        # Buscamos la relacion de pelicula persona como actores
+        
+        star = Stars.objects.filter(movie=movie, person=person)
+        #for star in stars:
+        #    if (star.person == person):
+        #        star1 = star
+        star.delete()
+        print("noe")
+        return JsonResponse({
+            "message":"Eliminado con exito"
+            }, status=204)
+    else:
+        return JsonResponse({
+            "error": "Se requiere PUT request"
+        }, status=400)
+
+
 
 @csrf_exempt
 def update(request, movie_id):
     # Buscamos la pelicula por id y al director de dicha peli
     movie = Movies.objects.get(pk=movie_id)
-    director = Directors.objects.filter(movie=movie)
-    director = director[0]
-
+    try:
+        director = Directors.objects.get(movie=movie)
+    except:
+        return JsonResponse({
+            "error": "director no encontrado"
+        }, status=400)
     if request.method == "PUT":
-            data = json.loads(request.body)
-            if data.get("title") is not None:
-                movie.title = data["title"]
-            if data.get("director") is not None:
-                # Buscamos si el director ya existe en nuestra base de datos 
-                person = People.objects.filter(name__iexact=data["director"])
-                if person:
-                    person = person[0]
-                    print("1")
-                    director.person = person
-                    director.save()
-                # Si no existe lo agregamos
-                else:
-                    person = People(name=data["director"])
-                    print("2")
-                    print(person.name)
-                    person.save()
-                    director.person = person
-                    director.save()     
-            movie.save()
-            return HttpResponse(status=204)
+        data = json.loads(request.body)
+        if data.get("title") is not None:
+            movie.title = data["title"]
+        if data.get("director") is not None:
+            # Buscamos si el director ya existe en nuestra base de datos 
+            person = People.objects.filter(name__iexact=data["director"])
+            if person.exists():
+                person = person[0]
+                director.person = person
+                director.save()
+            # Si no existe lo agregamos
+            else:
+                person = People(name=data["director"])
+                print("2")
+                print(person.name)
+                person.save()
+                director.person = person
+                director.save()     
+        movie.save()
+        return HttpResponse(status=204)
+    else:
+        return JsonResponse({
+            "error": "Se requiere PUT request"
+        }, status=400)
+
+        
 
 
 @csrf_exempt
@@ -132,12 +152,11 @@ def agregar_actor(request, movie_id):
         if data.get("person") is not None:
             person = People.objects.filter(name__iexact=data["person"])
             person = person[0]
-            print("person")    
+            print(person)    
         if person:
-            print("hola")
             star = Stars(movie=movie, person=person)
-        print(star.person.name)
-        return HttpResponse(status=204)
+            star.save()
+        return JsonResponse({"message": "Agregado exitosamente"}, status=204)
     else:
         return JsonResponse({
             "error": "Se requiere PUT request"

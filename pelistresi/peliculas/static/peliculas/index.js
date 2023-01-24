@@ -58,10 +58,19 @@ document.addEventListener('DOMContentLoaded', function(){
                 let id_actors = "actors"+editar.dataset.id;
                 //habilitar todos los campos de los actores
                 document.querySelectorAll(`#${id_actors} input[type=text]`).forEach(input => {
+                    let form = input.parentElement.parentElement;
+                    form.addEventListener('submit', (e)=>{
+                        e.preventDefault
+                        fetch(`/eliminar_star/${input.dataset.id}/${editar.dataset.id}`,{method: 'PUT'}) 
+                        form.remove()
+                    })
+                
                     //input.readOnly=false;
                     //input.style.backgroundColor = 'white';
                     //input.style.color ='black';
                 })
+                //mostramos el area para busqueda de actores para agregarlos a la pelicula
+                document.querySelector(`#encontrado${editar.dataset.id}`).style.display='block';    
                 // Mostramos los botones para eliminar actores de pelicula
                 document.querySelectorAll(`#${id_actors} input[type=submit]`).forEach(input => {
                     input.style.display='block';
@@ -91,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             <input type="text" class="form-control" readonly="readonly" value="${actor.name}">
                             <input type="submit" class="agregaractor" value="agregar">
                             `;
-                            element1.addEventListener('submit', function(){
+                            element1.addEventListener('submit', function(e){
                                 e.preventDefault();
                                 console.log("prevent")
                                 fetch(`/agregar_actor/${editar.dataset.id}`,{
@@ -100,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                     person:actor.name
                                     })   
                                 })
-                                element1.remove();
+                                element1.innerHTML=`<h4>Agregado</h4>`
                                 //.then(response => response.json())
                                 //.then(actors => {
                             })
@@ -126,6 +135,10 @@ document.addEventListener('DOMContentLoaded', function(){
                         //Ocultar botones de eliminar
                         document.querySelectorAll(`#${id_actors} input[type=submit]`).forEach(input => {
                             input.style.display='none';
+                            // Ocultar los resultados de busqueda de actores si existe
+                        if(document.querySelector(`#encontrado${editar.dataset.id}`)){
+                            document.querySelector(`#encontrado${editar.dataset.id}`).style.display='none';
+                        }
                         })
                     })
                     // Actualizar los valores utilizando method put

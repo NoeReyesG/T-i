@@ -7,7 +7,7 @@ class Movies(models.Model):
 
     def serialize(self):
         return{ "titulo": self.title }
-    
+ # Modelo que equivale a una tabla de Personas   
 class People(models.Model):
     name = models.TextField()
     birth = models.IntegerField(blank=True, null=True)
@@ -17,7 +17,7 @@ class People(models.Model):
                 "id":self.id,
                 "name": self.name 
                 }    
-
+# Modelo que equivale a una relacion many to many de personas y peliculas para registrar directores
 class Directors(models.Model):
     movie = models.ForeignKey('Movies', on_delete=models.CASCADE, default=None)
     person = models.ForeignKey('People', on_delete=models.CASCADE, default=None)
@@ -25,12 +25,13 @@ class Directors(models.Model):
     def serialize(self):
         return{ "director": self.person.name }
 
+# modelo que equivale a una tabla de ratings
 class Ratings(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE, default=None)
     rating = models.DecimalField(max_digits=3, decimal_places=1)
     votes = models.IntegerField()
 
-
+# Modelo que equivale a una relacion many to many de personas y peliculas para registrar actores
 class Stars(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE, default=None)
     person = models.ForeignKey(People, on_delete=models.CASCADE, default=None)
