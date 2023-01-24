@@ -87,10 +87,11 @@ def eliminar_star(request, person_id, movie_id):
 
 @csrf_exempt
 def update(request, movie_id):
-    # Buscamos la pelicula por id
+    # Buscamos la pelicula por id y al director de dicha peli
     movie = Movies.objects.get(pk=movie_id)
-    
-    
+    director = Directors.objects.filter(movie=movie)
+    director = director[0]
+
     if request.method == "PUT":
             data = json.loads(request.body)
             if data.get("title") is not None:
@@ -100,16 +101,17 @@ def update(request, movie_id):
                 person = People.objects.filter(name__iexact=data["director"])
                 if person:
                     person = person[0]
-                    person.name = data["director"]
                     print("1")
-                    print(person)
+                    director.person = person
+                    director.save()
                 # Si no existe lo agregamos
                 else:
-                    #Completar aquí mañana
                     person = People(name=data["director"])
                     print("2")
                     print(person.name)
-                #person.save()
+                    person.save()
+                    director.person = person
+                    director.save()     
             movie.save()
             return HttpResponse(status=204)
 
@@ -121,7 +123,25 @@ def buscar_actor(request, actor_name):
     #actors = actors.order_by("name").all()
     return JsonResponse([actor.serialize() for actor in actors], safe=False)
 
-
+@csrf_exempt
+def agregar_actor(request, movie_id):
+    
+    if request.method == "PUT":
+        movie = Movies.objects.get(pk=movie_id)
+        data = json.loads(request.body)
+        if data.get("person") is not None:
+            person = People.objects.filter(name__iexact=data["person"])
+            person = person[0]
+            print("person")    
+        if person:
+            print("hola")
+            star = Stars(movie=movie, person=person)
+        print(star.person.name)
+        return HttpResponse(status=204)
+    else:
+        return JsonResponse({
+            "error": "Se requiere PUT request"
+        }, status=400)
 
 
 # Función para nuevo registro de película

@@ -77,20 +77,17 @@
                 {% for actor in resultado.1 %}
                     <form  action="{% url 'eliminar_star' actor.id resultado.0.id %}">
                     <li><input type="text" class="form-control" readonly="readonly" value="{{ actor.name }}" style="background-color:#000428; color: white;"></li>
-                    <input class="eliminaractor" data-id={{actor.id}} type="submit" style="display:none" value="&#10005; eliminar">
+                    <input class="eliminaractor" data-id={{actor.id}} type="submit" style="display:none" value="&times; eliminar">
                     </form>
                 {% endfor %}
                 </ul>
         </section>
         <section class="acciones">
-            <button class="editar" data-id="{{resultado.0.id}}">editar</button>
+            <button class="editar" data-id="{{resultado.0.id}}">Editar</button>
             <!--Pasamos el id de la pelicula a eliminar-->
             <form id="eliminarf" action="{% url 'eliminar' resultado.0.id %}" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="eliminar">Zona de peligro!</label>
-                    <input name="eliminar" class="eliminar btn btn-danger" type="submit" value="Eliminar">
-                </div>
+                <input name="eliminar" class="eliminar btn btn-danger" type="submit" value="Eliminar">
             </form>
         </section>
     </section>

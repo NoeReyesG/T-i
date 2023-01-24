@@ -21,9 +21,12 @@ label{
     color: #d4aa00;
     font-size: large;
 }
-
-ul li {
-    color:white;    
+ul{
+    list-style-type: none;
+}
+ul li{
+    color:#d4aa00;
+    margin-bottom: 10px;;
 }
 
 h2{
@@ -68,31 +71,33 @@ nav{
     margin-bottom: 10px;
 }
 .acciones{
-    place-self: end center;
+    display:flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin-bottom: 10px;
 }
 
 .eliminaractor{
     margin-top: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: #dc3545;
     border-color:  #dc3545;
     color:white;
-    font-weight: 700;
     height: 25px;
-    width: 65px;
+    width: 75px;
     opacity: 1;
     display:none;
     font-size: small;   
 }
 .agregaractor{
     margin-top: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: #ffcc00;
     border-color:  #d4aa00;
     color: #000428;
     font-weight: 700;
     height: 25px;
-    width: 65px;
+    width: 75px;
     opacity: 1;
     font-size: small;   
 }
@@ -109,4 +114,20 @@ hr{
 .buscaractor{
     margin-bottom: 10px;
     display:none;
+}
+
+.editar{
+    background-color:#d4aa00;
+    border-color: #ffcc00;
+    color:white;
+    height: 37px;
+    width: 100px;
+    opacity: 1;
+    border-radius: 0.25rem;
+
+}
+
+.botones{
+    display:flex;
+    justify-content: space-between;
 }
