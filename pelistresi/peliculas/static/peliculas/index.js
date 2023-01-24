@@ -24,17 +24,19 @@ document.addEventListener('DOMContentLoaded', function(){
     /* Pedir confirmación antes de eliminar una película*/
     // Verificamos que haya un formulario para eliminar, el cual se despliega solo si se ha hecho
     // una busqueda exitosa y se desplegó información de una película
-    if (document.querySelector('#eliminarf')){
+    if (document.querySelector('.eliminarf')){
         // Obtenemos el formulario y le damos un event listener para el momento de enviar el formulario
-        let eliminar = document.querySelector('#eliminarf');
+        document.querySelectorAll('.eliminarf').forEach( eliminar =>{
         eliminar.addEventListener('submit', function(e){
             //evitamos que la forma se envíe, pedimos confirmación al usuario, en caso de ser positiva, enviamos el formulario
             e.preventDefault();  
             if (confirm("¿Seguro que deseas eliminar el film?")==true){
                 eliminar.submit();
             }   
-        });
-    }    
+        })
+        })
+    }
+    
 
     /* Editar el contenido */
     if (document.querySelector('.editar')){

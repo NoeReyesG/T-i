@@ -85,7 +85,7 @@
         <section class="acciones">
             <button class="editar" data-id="{{resultado.0.id}}">Editar</button>
             <!--Pasamos el id de la pelicula a eliminar-->
-            <form id="eliminarf" action="{% url 'eliminar' resultado.0.id %}" method="post">
+            <form class="eliminarf" id="eliminarf" action="{% url 'eliminar' resultado.0.id %}" method="post">
                 {% csrf_token %}
                 <input name="eliminar" class="eliminar btn btn-danger" type="submit" value="Eliminar">
             </form>
