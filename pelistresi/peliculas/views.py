@@ -8,40 +8,48 @@ import json
 
 def index(request):
     if request.method == 'POST':
-        resultado = {}
+        resultado = []
+        
         #buscarpor = request.POST["buscarpor"]
         busqueda = request.POST["buscar"]
        
         # Hacemos la query en la base de datos, aplicamos __i exact para que sea insensitivo a mayusculas y min
         # Agregamos .strip() para eliminar espacios en blanco al principio y final
-        movie = Movies.objects.filter(title__icontains=busqueda.strip())
+        # limitamos el resultado a los primeros 5 elementos
+        movies = Movies.objects.filter(title__icontains=busqueda.strip())[:5]
+      
         # Si el resultado de la busqueda fue exitoso
-        if movie:
+        list1 = []
+        for movie in movies:
+            dict2 = {}
+            list2 = []
+            list3 = []
             # Hacemos las busquedas necesarias en la base de datos
-            movieobject = Movies.objects.get(pk=movie[0].id)
-            stars = Stars.objects.filter(movie=movieobject)
-            director = Directors.objects.filter(movie=movieobject)
-            rating = Ratings.objects.filter(movie=movieobject)
+            stars = Stars.objects.filter(movie=movie)
+            director = Directors.objects.filter(movie=movie)
+            rating = Ratings.objects.filter(movie=movie)
             # Guardamos la información en un diccionario que pasaremos al front end
-            resultado["id"] = movie[0].id
-            resultado["titulo"] = movie[0].title
-            if director:
-                resultado["director"] = director[0].person.name
+            for star in stars:
+                star = star.serialize()
+                list3.append(star)
+            dict2["id"] = movie.id
+            dict2["titulo"] = movie.title
+            if director:  
+                dict2["director"] = director[0].person.name
             else:
-                resultado["director"] = "Desconocido"
-            resultado["year"] = movie[0].year
+                dict2["director"] = "Desconocido"
+            dict2["year"] = movie.year
             if rating:
-                resultado["rating"] = rating[0].rating
-                resultado["votos"] = rating[0].votes
-            return render(request, "peliculas/index.html", {
-                "resultado": resultado,
-                "actores": stars
-            })
-        else:
-            return render(request, "peliculas/index.html", {
-            "message": "Película no encontrada",
-            })
-            
+                dict2["rating"] = rating[0].rating
+                dict2["votos"] = rating[0].votes
+
+            list2.append(dict2)
+            list2.append(list3)
+            list1.append(list2)
+
+        return render(request, "peliculas/index.html", {
+            "resultados": list1,
+        })    
     else:
         #peliculas = Movies.objects.all()
         return render(request, "peliculas/index.html",{
@@ -105,7 +113,18 @@ def update(request, movie_id):
             movie.save()
             return HttpResponse(status=204)
 
-# Ruta para nuevo registro de película
+
+@csrf_exempt
+# Función para buscar actor
+def buscar_actor(request, actor_name):
+    actors = People.objects.filter(name__icontains=actor_name.strip())[:3]
+    #actors = actors.order_by("name").all()
+    return JsonResponse([actor.serialize() for actor in actors], safe=False)
+
+
+
+
+# Función para nuevo registro de película
 def registrar_pelicula(request):
     # Por hacer
     return render(request, "peliculas/registrar_pelicula.html")
@@ -123,14 +142,15 @@ def registrar_persona(request):
     else:    
         return render(request, "peliculas/registrar_persona.html")
 
+
 # Este es el back-end para una api para autocompletar. Fue cuando traté de abordar de forma distinta el problema
 # aún no estoy seguro si me servirá
 @csrf_exempt
 def buscar(request, busquedapor):
     if busquedapor == "titulo":
-        titulos = Movies.objects.all()
-        titulos = titulos.order_by("title").all()
-        return JsonResponse([titulo.serialize() for titulo in titulos], safe=False)
+        movies = Movies.objects.all()
+        movies = movies.order_by("title").all()
+        return JsonResponse([movie.serialize() for movie in movies], safe=False)
     if busquedapor == "actor":
         actores = Stars.objects.all()
         return JsonResponse([actor.serialize() for actor in actores], safe=False)

@@ -31,18 +31,18 @@
     <br>
 
     <!--Si el resultado de una busqueda fue exitoso-->
-    {% if resultado %}
+    {% for resultado in resultados %}
     <section class="grid container">
         <section>
             <h4>Película</h4>
             <!--Para dar un único id a la forma de cada pelicula usaremos el id identificador de la pelicula-->
-            <form action="#" id="movie{{resultado.id}}">
+            <form action="#" id="movie{{resultado.0.id}}">
                 <ul>
-                    <li><b>Título: </b><input style="background-color:#000428; color: white;" class="form-control black" type="text" readonly="readonly" value="{{ resultado.titulo }}"></li>
-                    <li><b>Director: </b><input style="background-color:#000428; color: white;" readonly="readonly" type="text" class="form-control black" value="{{ resultado.director }}"></li>
+                    <li><b>Título: </b><input style="background-color:#000428; color: white;" class="form-control black" type="text" readonly="readonly" value="{{ resultado.0.titulo }}"></li>
+                    <li><b>Director: </b><input style="background-color:#000428; color: white;" readonly="readonly" type="text" class="form-control black" value="{{ resultado.0.director }}"></li>
                     <!--Si la pelicula tiene calificación-->
-                    {%if resultado.rating %}
-                        <li><b>Rating: </b>{{ resultado.rating }} <b>de</b> {{resultado.votos}} votos</li>
+                    {%if resultado.0.rating %}
+                        <li><b>Rating: </b>{{ resultado.0.rating }} <b>de</b> {{resultado.0.votos}} votos</li>
                     {% else %}
                         <li><b>Rating: </b> En espera...</li>
                     {% endif %}
@@ -53,8 +53,8 @@
             </form>
             <h4>Actores</h4>
                 <!--forma para buscar actores y agregarlos a la pelicula-->
-                <div class="buscaractor">
-                <form class="row g-3" action="#">
+                <div class="buscaractor" id="buscar{{resultado.0.id}}">
+                <form class="row g-3" action="#" id="form{{resultado.0.id}}">
                     <div class="col-auto">
                         <label for="buscaractor">Buscar actor</label>
                     </div>
@@ -67,20 +67,25 @@
                 </form>
                 <hr>
                 </div>
-                
-                <ul id="actors{{resultado.id}}">    
-                {% for actor in actores %}
-                    <form  action="{% url 'eliminar_star' actor.person.id resultado.id %}">
-                    <li><input type="text" class="form-control" readonly="readonly" value="{{ actor.person.name }}" style="background-color:#000428; color: white;"></li>
-                    <input class="eliminaractor" data-id={{actor.person.id}} type="submit" style="display:none" value="&#10005; eliminar">
+                <div>
+                    <ul id="encontrado{{resultado.0.id}}">
+
+                    </ul>
+                </div>
+
+                <ul id="actors{{resultado.0.id}}">    
+                {% for actor in resultado.1 %}
+                    <form  action="{% url 'eliminar_star' actor.id resultado.0.id %}">
+                    <li><input type="text" class="form-control" readonly="readonly" value="{{ actor.name }}" style="background-color:#000428; color: white;"></li>
+                    <input class="eliminaractor" data-id={{actor.id}} type="submit" style="display:none" value="&#10005; eliminar">
                     </form>
                 {% endfor %}
                 </ul>
         </section>
         <section class="acciones">
-            <button class="editar" data-id="{{resultado.id}}">editar</button>
+            <button class="editar" data-id="{{resultado.0.id}}">editar</button>
             <!--Pasamos el id de la pelicula a eliminar-->
-            <form id="eliminarf" action="{% url 'eliminar' resultado.id %}" method="post">
+            <form id="eliminarf" action="{% url 'eliminar' resultado.0.id %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="eliminar">Zona de peligro!</label>
@@ -90,9 +95,9 @@
         </section>
     </section>
      <!--Si el resultado de la busqueda no fue exitoso-->    
-    {% else %}
-        <h3>{{message}}</h3>
-    {% endif %}
+    {% empty %}
+        <h3>Película no encontrada</h3>
+    {% endfor %}
 {% endblock %}
 
 {% block script %}

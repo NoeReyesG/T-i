@@ -78,11 +78,23 @@ nav{
     border-color:  #dc3545;
     color:white;
     font-weight: 700;
-    height: 20px;
+    height: 25px;
     width: 65px;
     opacity: 1;
     display:none;
-    font-size: x-small;   
+    font-size: small;   
+}
+.agregaractor{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: #ffcc00;
+    border-color:  #d4aa00;
+    color: #000428;
+    font-weight: 700;
+    height: 25px;
+    width: 65px;
+    opacity: 1;
+    font-size: small;   
 }
 
 .derecha{
