@@ -93,10 +93,10 @@
     </section>
      <!--Si el resultado de la busqueda no fue exitoso-->    
     {% empty %}
-        <h3>Película no encontrada</h3>
+        <h3>{{message}}</h3>
     {% endfor %}
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'peliculas/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'peliculas/index.js' %}"></script>
 {% endblock %}

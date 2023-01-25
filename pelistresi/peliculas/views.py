@@ -17,7 +17,10 @@ def index(request):
         # Agregamos .strip() para eliminar espacios en blanco al principio y final
         # limitamos el resultado a los primeros 5 elementos
         movies = Movies.objects.filter(title__icontains=busqueda.strip())[:5]
-      
+        if not movies.exists():
+            message = "Pelicula no encontrada!"
+        else:
+            message =""
         # Si el resultado de la busqueda fue exitoso
         list1 = []
         for movie in movies:
@@ -49,6 +52,7 @@ def index(request):
 
         return render(request, "peliculas/index.html", {
             "resultados": list1,
+            "message": message
         })    
     else:
         #peliculas = Movies.objects.all()
