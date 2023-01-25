@@ -8,7 +8,8 @@
 {% block body %}
     <h3>Encuentra tu película</h3>
     <section class="container">
-        <form class="row g-3" action="{% url 'index'%}" method="post">
+        
+        <form id="busqueda" class="row g-3" action="{% url 'index'%}" method="post">
             <!--Esto es para evitar el cross site request forgery-->
             {% csrf_token %}
             <div class="col-auto">

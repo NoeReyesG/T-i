@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-gi#h_x8vz+)z@xv2rrv)t!3ri*mewa_j)6bk^xr&6ux%4x&!5s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['triplei-peliculas.azurewebsites.net']
+ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = ['https://triplei-peliculas.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = []
 
 INSTALLED_APPS = [
     'peliculas',
