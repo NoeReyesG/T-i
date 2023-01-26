@@ -58,9 +58,10 @@ document.addEventListener('DOMContentLoaded', function(){
                 })
                 // Obtenemos la forma ppara editar los campos titulo y director de una película en especifico
                 const form_edit_movie = document.querySelector(`#movie${id_movie}`);
+                // Desplegamos los botones para eliminar actor de una pelicula 
                 document.querySelector(`#movie${id_movie} input[type=submit]`).style.display='block';
                 let id_actors = "actors"+id_movie;
-                //habilitar todos los campos de los actores
+                // en cada forma ponemos un event listener para que al enviar el formulario el dato de dicho actor desaparezca
                 document.querySelectorAll(`#${id_actors} input[type=text]`).forEach(input => {
                     let form = input.parentElement.parentElement;
                     form.addEventListener('submit', (e)=>{
@@ -73,14 +74,15 @@ document.addEventListener('DOMContentLoaded', function(){
                     //input.style.backgroundColor = 'white';
                     //input.style.color ='black';
                 })
-                //mostramos el area para busqueda de actores para agregarlos a la pelicula
+
+                // Mostramos el area para busqueda de actores para agregarlos a la pelicula
                 document.querySelector(`#encontrado${id_movie}`).style.display='block';    
                 // Mostramos los botones para eliminar actores de pelicula
                 document.querySelectorAll(`#${id_actors} input[type=submit]`).forEach(input => {
                     input.style.display='block';
                 }) 
 
-                // Mostrar la barra de busqueda para agregar actores
+                // Mostrar la barra de busqueda para encontrar personas y después poder agregarlos como actores a la pelicula 
                 const busqueda_actores = document.querySelector(`#buscar${id_movie}`);
                 busqueda_actores.style.display = 'block';
                 // Obtenemos el formulario para la busqueda de actores para agregarlos a un film
@@ -92,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     // Obtenemos el nombre del actor escrito en el campo de texto de busqueda
                     nameactor = document.querySelector(`#form${id_movie} input[type=text]`).value;
                     // Hacemos la busqueda, en caso de ser exitosa se desplegara el resultado,
-                    // el cual puede ser hasta de tres actores si hay multiples coincidencias en el substring 
+                    // el cual puede ser hasta de tres actores si hay multiples coincidencias en el substring
                     fetch(`/buscar_actor/${nameactor}`)
                     .then(response => response.json())
                     .then(actors => {
@@ -113,7 +115,21 @@ document.addEventListener('DOMContentLoaded', function(){
                                     person:actor.name
                                     })   
                                 })
-                                element1.innerHTML=`<h4>Agregado</h4>`
+                                element1.innerHTML=`<p>Agregado</p>`
+
+                                // crear elemento para mostrar al actor en el área de agregado:
+                                const element2 = document.createElement('form');
+                                element2.setAttribute("action", "#") //ESTOY AQUI
+                                element2.innerHTML =`
+                                <li><input type="text" class="form-control" readonly="readonly" value="${actor.name}" style="background-color:#000428; color: white;"></li>
+                                <input class="eliminaractor"  type="submit" style = "display: block" value="&times; eliminar"></input>
+                                `
+                                element2.addEventListener('submit', (e)=>{
+                                    e.preventDefault
+                                    fetch(`/eliminar_star/${actor.id}/${id_movie}`,{method: 'PUT'}) 
+                                    element2.remove()
+                                })
+                                document.querySelector(`#actors${id_movie}`).prepend(element2);                                
                                 //.then(response => response.json())
                                 //.then(actors => {
                             })
@@ -162,7 +178,15 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     /* Diseño responsive */
-    window.addEventListener('resize', function() {
+
+    // LLamamos a la función al cargar el documento de forma inicial si se abre en una pantalla chica 
+    if (window.innerWidth < 768) {
+        responsive();
+    }
+    // Evento para detectar cuando la pantalla cambia a un formato celular
+    window.addEventListener('resize', responsive);
+    
+    function responsive(){
         const win = window.innerWidth;
         const formulario = document.querySelector('#busqueda')
         const boton_buscar = document.querySelector('#busqueda div input[type=submit]');
@@ -187,5 +211,5 @@ document.addEventListener('DOMContentLoaded', function(){
           formulario.classList.add('g-3');
           formulario.classList.remove('container2');
         }
-      });
+    }   
 }) 

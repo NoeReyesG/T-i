@@ -179,9 +179,12 @@ def registrar_persona(request):
     if request.method == 'POST':
         name = request.POST["nombre"]
         year = request.POST["year"]
-        print(name)
-        print(year)
-        return HttpResponseRedirect(reverse("index"))
+        person = People(name=name, birth=year)
+        person.save()
+        return render(request, "peliculas/registrar_persona.html",{
+            "message" : "Artista registrado"
+        })
+        #return HttpResponseRedirect(reverse("index"))
     else:    
         return render(request, "peliculas/registrar_persona.html")
 

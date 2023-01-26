@@ -4,10 +4,12 @@
 {% block body %}
 <h1>Registrar persona</h1>
     <section class="container">
+        {% if message %}
+            <div class="alert alert-primary" id="alerta" role="alert">{{message}}</div>
+        {% endif %}
         <form action="{% url 'registrarpersona' %}" method="post">
             <!--Esto es para evitar el cross site request forgery-->
             {% csrf_token %}
-            
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <input class="form-control" type="text" name="nombre" placeholder="Nombre" required>
