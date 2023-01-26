@@ -5,7 +5,9 @@
 * muestra un listado de peliculas. 
 * El usuario puede editar información sobre la película, ver el detalle de la película (los datos como titulo, año, género, actores, etc..) y puede borrar peliculas.
 
-La aplicación se creó usando Python, en especifico el framework Django JavaScript HTML, CSS y algunas clases de bootstrap
+Se puede consultar la aplicación deployada en Azure <span style="color:red">[AQUI](https://triplei-peliculas.azurewebsites.net/)</span> 
+
+La aplicación se creó usando Python, en especifico el framework Django, JavaScript, HTML, CSS y algunas clases de bootstrap.
 
 Se creó una base de datos y se hizo la inserción de las películas estrenadas en 2022. Se conectó con SQLite para administrar la BD, pero de ser necesario se puede configurar para que se administre en MySQL, para este ejercicio no me pareciió necesario.
 
@@ -20,7 +22,7 @@ Para correr el proyecto, desde la carpeta *tresi/tresi/pelistresi* se ejecuta el
 
 **nota final** *Por ahora envío lo que he programado del ejercicio solicitado, porque no quiero llegar tarde a sus consideraciones, pero aún resta mucho trabajo por hacer para considerar la aplicación aceptable. Las rutas fuera de index no están completas, hay muchas areas de mejora, me falta trabajar en el diseño responsive y agregar animaciones para una mejor experiencia de usuario, y completar comentarios por ejemplo, sin embargo creo que con lo que se cuenta hasta ahora se puede ver si sería alguien con las caracteristicas que requieren*
 
-
+**Actualización** Ya se cuenta con algo de diseño responsive, y varias mejoras
 
 
 
