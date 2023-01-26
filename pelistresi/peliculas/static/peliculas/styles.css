@@ -144,7 +144,6 @@ hr{
 @media only screen and (max-width: 768px){
     .grid{
         grid-template-columns: 1fr;
-        margin: 15px;
     }
     .nav{
         font-size: small;
@@ -156,5 +155,32 @@ hr{
     .button{
         margin-top: 10px;
     }
+    .container-md{
+        margin: 1px;
+    }
+    .grid > section:first-child{
+        justify-self: center;
+        margin: 0 5px 5px 15px;
+    }
+    ul{
+        margin: 0;
+        padding: 0;
+    }
+
+    h4{
+        text-align: center;
+    }
+    .derecha{
+        justify-content: center;
+    }
 }
 
+@media only screen and (max-width: 220px){
+    .container{
+        position:absolute;
+    }
+    .nav{
+        font-size: x-small;
+    }
+   
+}
