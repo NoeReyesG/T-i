@@ -192,13 +192,37 @@ def agregar_actor(request, movie_id):
 # Función para nuevo registro de película
 def registrar_pelicula(request):
     # Por hacer
-    print("registrar")
-    return render(request, "peliculas/registrar_pelicula.html")
+    if request.method == 'POST':
+        title = request.POST["title"]
+        year = request.POST["year"]
+        person = request.POST["director"]
+        print(person)
+        rating = request.POST["rating"]
+        votes = request.POST["votes"]
+        movie = Movies(title=title, year=year)
+        person_instance = People.objects.filter(name=person)
+        person_instance = person_instance[0]
+        print(person_instance)
+        director = Directors(movie = movie, person=person_instance)
+        movie.save()
+        print(movie)
+        director.save()
+        print(director)
+        if rating and votes:
+            rating_movie = Ratings(movie=movie, rating=rating, votes=votes)
+            rating_movie.save()
+            print (rating)
+        return render(request, "peliculas/registrar_pelicula.html",{
+            "mensaje": "Película guardada con éxito"
+        })
+    else:
+        print("registrar")
+
+        return render(request, "peliculas/registrar_pelicula.html")
 
 
 # Ruta para nuevo registro de actor/director
 def registrar_persona(request):
-    # Por completar
     if request.method == 'POST':
         name = request.POST["nombre"]
         year = request.POST["year"]
@@ -212,18 +236,3 @@ def registrar_persona(request):
         return render(request, "peliculas/registrar_persona.html")
 
 
-# Este es el back-end para una api para autocompletar. Fue cuando traté de abordar de forma distinta el problema
-# aún no estoy seguro si me servirá
-@csrf_exempt
-def buscar(request, busquedapor):
-    if busquedapor == "titulo":
-        movies = Movies.objects.all()
-        movies = movies.order_by("title").all()
-        return JsonResponse([movie.serialize() for movie in movies], safe=False)
-    if busquedapor == "actor":
-        actores = Stars.objects.all()
-        return JsonResponse([actor.serialize() for actor in actores], safe=False)
-    if busquedapor == "director":
-        directores = Directors.objects.all()
-        return JsonResponse([director.serialize() for director in directores], safe=False)
-        

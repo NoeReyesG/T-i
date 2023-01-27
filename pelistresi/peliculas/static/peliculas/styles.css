@@ -2,6 +2,7 @@ body{
     background: linear-gradient(135deg, #000428, #004e92);
     font-family: "Lora", sans-serif;
 }
+
 h1{
     padding: 10px;
     text-align: center;
@@ -147,7 +148,7 @@ hr{
 
 .inner-container{
     margin:auto;
-    width: 500px;
+    width: 600px;
 }
 
 /* Responsive*/
@@ -187,6 +188,10 @@ hr{
         width:400px;
         padding: 0 100px;
     }
+    ul{
+        padding:5px;
+        margin: 5px;
+    }
 }
 
 @media only screen and (max-width: 350px){
@@ -203,6 +208,10 @@ hr{
     }
     .nav{
         font-size: x-small;
+    }
+    ul{
+        padding:5px;
+        margin: 5px;
     }
    
 }

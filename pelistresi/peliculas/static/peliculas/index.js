@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function(){
                 editar.style.display='none';
                 // Ocultamos el mensaje para cuando no se encuentra un director registrado
                 document.querySelector(`#message${id_movie}`).style.display='none';
+                // Limpiamos el area de busqueda
+                document.querySelector(`#encontrado${id_movie}`).innerHTML = '';
                 // constante para guardar el título y nombre del director
                 const campos = []; 
                 // Seleccionamos los campos tipo texto asociados los cuales corresponden al titulo de la pelicula y el director 
@@ -73,9 +75,6 @@ document.addEventListener('DOMContentLoaded', function(){
                         form.remove()
                     })
                 
-                    //input.readOnly=false;
-                    //input.style.backgroundColor = 'white';
-                    //input.style.color ='black';
                 })
 
                 // Mostramos el area para busqueda de actores para agregarlos a la pelicula
@@ -94,6 +93,8 @@ document.addEventListener('DOMContentLoaded', function(){
                 // Agregamos un evento al formulario de buscar actores y prevenimos el submit
                 form_buscar_actores.addEventListener('submit', (e) => {
                     e.preventDefault();
+                    // Limpiamos el área donde se muestran los resultados
+                    document.querySelector(`#encontrado${id_movie}`).innerHTML="";
                     // Obtenemos el nombre del actor escrito en el campo de texto de busqueda
                     nameactor = document.querySelector(`#form${id_movie} input[type=text]`).value;
                     // Hacemos la busqueda, en caso de ser exitosa se desplegara el resultado,
@@ -161,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         input.style.backgroundColor = '#000428';
                         input.style.color ='white';
                         campos.push(input.value);
+                        
                         // Ocultar boton guardar cambios
                         document.querySelector(`#movie${id_movie} input[type=submit]`).style.display='none';
                         // Ocultar busqueda de actores
@@ -172,10 +174,11 @@ document.addEventListener('DOMContentLoaded', function(){
                         if(document.querySelector(`#encontrado${id_movie}`)){
                             document.querySelector(`#encontrado${id_movie}`).style.display='none';
                         }
-                        // mostrar boton editar nuevamente
-                        editar.style.display='block';
+                        
                         })
                     })
+                    // mostrar boton editar nuevamente
+                    editar.style.display='block';
                     // Actualizar los valores utilizando method put
                     fetch(`/update/${id_movie}`,{
                         method: 'PUT',
@@ -188,7 +191,8 @@ document.addEventListener('DOMContentLoaded', function(){
                     .then(result =>{
                         const mensaje = document.createElement('p');
                         if (result.message == "Director no existe"){
-                            document.querySelector(`#message${id_movie}`).style.display='block';     
+                            document.querySelector(`#message${id_movie}`).style.display='block';
+                            input.style.backgroundColor = '#dc3545';     
                         }
                         else{
                             document.querySelector(`#message${id_movie}`).style.display='none';     
