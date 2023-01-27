@@ -16,7 +16,7 @@
                 <label for="buscar" id="buscarl">Ingresa el título:</label>
             </div>
             <div class="col-auto">
-                <input autofocus class="form-control" type="text" name="buscar" id="buscar" placeholder="Busqueda...">
+                <input autofocus class="form-control" type="text" name="buscar" id="buscar" placeholder="Búsqueda...">
             </div>
             <div class="col-auto">
                 <input class="button" id="buttonsearch" disabled="true" type="submit" value="Buscar" style="opacity:0.5">
@@ -41,6 +41,7 @@
                 <ul>
                     <li><b>Título: </b><input style="background-color:#000428; color: white;" class="form-control black" type="text" readonly="readonly" value="{{ resultado.0.titulo }}"></li>
                     <li><b>Director: </b><input style="background-color:#000428; color: white;" readonly="readonly" type="text" class="form-control black" value="{{ resultado.0.director }}"></li>
+                    <li id="message{{resultado.0.id}}" style="display:none; color:white">El director no está registrado ¿Lo has escrito bien? registralo <a href="{% url 'registrarpersona' %}">aquí.</a></li>
                     <!--Si la pelicula tiene calificación-->
                     {%if resultado.0.rating %}
                         <li><b>Rating: </b>{{ resultado.0.rating }} <b>de</b> {{resultado.0.votos}} votos</li>
@@ -60,7 +61,7 @@
                         <label for="buscaractor">Buscar actor</label>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control" name="buscaractor">
+                        <input type="text" required class="form-control" name="buscaractor" placeholder="Búsqueda...">
                     </div>
                     <div class="col-auto">
                         <input type="submit" class="button" value="Buscar">

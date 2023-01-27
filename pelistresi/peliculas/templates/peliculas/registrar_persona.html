@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-<h1>Registrar persona</h1>
+<h2>Registrar persona</h2>
     <section class="container">
         {% if message %}
             <div class="alert alert-primary" id="alerta" role="alert">{{message}}</div>
@@ -18,7 +18,9 @@
                 <label for="year">Año de nacimiento</label>
                 <input class="form-control" type="number" name="year" min = "1750" max="2023" placeholder="formato: YYYY" required>
             </div>
-            <input class="button" type="submit" value="Guardar" style="opacity:1">
+            <div class="derecha">
+                <input class="button" type="submit" value="Guardar" style="opacity:1">
+            </div>
         </form>
     </section>
 

@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function(){
                 let id_movie = editar.dataset.id;
                 //Ocultamos el boton editar
                 editar.style.display='none';
+                // Ocultamos el mensaje para cuando no se encuentra un director registrado
+                document.querySelector(`#message${id_movie}`).style.display='none';
+                // constante para guardar el título y nombre del director
                 const campos = []; 
                 // Seleccionamos los campos tipo texto asociados los cuales corresponden al titulo de la pelicula y el director 
                 document.querySelectorAll(`#movie${id_movie} input[type=text]`).forEach(input => {
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     nameactor = document.querySelector(`#form${id_movie} input[type=text]`).value;
                     // Hacemos la busqueda, en caso de ser exitosa se desplegara el resultado,
                     // el cual puede ser hasta de tres actores si hay multiples coincidencias en el substring
-                    fetch(`/buscar_actor/${nameactor}`)
+                    fetch(`/buscar_persona/actor/${nameactor}`)
                     .then(response => response.json())
                     .then(actors => {
                         actors.forEach(actor =>{
@@ -181,6 +184,17 @@ document.addEventListener('DOMContentLoaded', function(){
                             director: campos[1]
                         })   
                     })//end fetch
+                    .then(response => response.json())
+                    .then(result =>{
+                        const mensaje = document.createElement('p');
+                        if (result.message == "Director no existe"){
+                            document.querySelector(`#message${id_movie}`).style.display='block';     
+                        }
+                        else{
+                            document.querySelector(`#message${id_movie}`).style.display='none';     
+                        }
+                       
+                    })
             
                 }) //end edit eventlistener
             })

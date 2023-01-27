@@ -12,6 +12,6 @@ urlpatterns = [
     path("eliminar/<int:movie_id>", views.eliminar, name="eliminar"),
     path("eliminar_star/<int:person_id>/<int:movie_id>", views.eliminar_star, name="eliminar_star"),
     path("update/<int:movie_id>", views.update, name="update"),
-    path("buscar_actor/<str:actor_name>", views.buscar_actor, name="buscar_actor"),
+    path("buscar_persona/<str:role>/<str:name>", views.buscar_persona, name="buscar_persona"),
     path("agregar_actor/<int:movie_id>", views.agregar_actor, name="agregar_actor")
 ]

@@ -103,35 +103,43 @@ def eliminar_star(request, person_id, movie_id):
 
 @csrf_exempt
 def update(request, movie_id):
-    # Buscamos la pelicula por id y al director de dicha peli
-    movie = Movies.objects.get(pk=movie_id)
-    try:
-        director = Directors.objects.get(movie=movie)
-    except:
-        return JsonResponse({
-            "error": "director no encontrado"
-        }, status=400)
+    
+    #try:
+    #    director = Directors.objects.get(movie=movie)
+    #except:
+    #    director = Directors(movie=movie)
     if request.method == "PUT":
+        # Buscamos la pelicula por id
+        movie = Movies.objects.get(pk=movie_id)
+        # cargamos los datos que se nos han pasado en el fetch (título y director)
         data = json.loads(request.body)
         if data.get("title") is not None:
             movie.title = data["title"]
+            movie.save()
         if data.get("director") is not None:
             # Buscamos si el director ya existe en nuestra base de datos 
             person = People.objects.filter(name__iexact=data["director"])
-            if person.exists():
+            # Si existe...
+            if person:
                 person = person[0]
-                director.person = person
-                director.save()
-            # Si no existe lo agregamos
-            else:
-                person = People(name=data["director"])
-                print("2")
+                print("1")
                 print(person.name)
-                person.save()
+                #...verificamos si la película tiene director registrado 
+                try:
+                    director = Directors.objects.get(movie=movie)
+                # si no creamos la relación
+                except:
+                    director = Directors(movie=movie, person=person)
+                print(2)
+                # Actualizamos al director
                 director.person = person
-                director.save()     
-        movie.save()
-        return HttpResponse(status=204)
+                print(director.person.name)
+                print(director.movie.title)
+                director.save()
+                return HttpResponse(status=204)
+            # Si no existe el director en nuestra base de dartos mandamos un mensaje
+            else:
+                return JsonResponse({"message": "Director no existe"}, status = 400)
     else:
         return JsonResponse({
             "error": "Se requiere PUT request"
@@ -142,10 +150,17 @@ def update(request, movie_id):
 
 @csrf_exempt
 # Función para buscar actor
-def buscar_actor(request, actor_name):
-    actors = People.objects.filter(name__icontains=actor_name.strip())[:3]
-    #actors = actors.order_by("name").all()
-    return JsonResponse([actor.serialize() for actor in actors], safe=False)
+def buscar_persona(request, role, name,):
+    if role == "actor":
+        actors = People.objects.filter(name__icontains=name.strip())[:3]
+        #actors = actors.order_by("name").all()
+        return JsonResponse([actor.serialize() for actor in actors], safe=False)
+    if role == "director":
+        director = People.objects.filter(name__iexact=name.strip())
+        if director:
+            return JsonResponse({"resultado": "encontrado"})
+        else:
+            return JsonResponse({"resultado": "no encontrado"})
 
 @csrf_exempt
 def agregar_actor(request, movie_id):
@@ -166,7 +181,7 @@ def agregar_actor(request, movie_id):
             else:
                 star = Stars(movie=movie, person=person)
                 print(star.person.name)
-                #star.save()
+                star.save()
         return JsonResponse({"message": "Agregado exitosamente"})
     else:
         return JsonResponse({
@@ -177,6 +192,7 @@ def agregar_actor(request, movie_id):
 # Función para nuevo registro de película
 def registrar_pelicula(request):
     # Por hacer
+    print("registrar")
     return render(request, "peliculas/registrar_pelicula.html")
 
 
