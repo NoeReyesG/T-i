@@ -115,26 +115,36 @@ document.addEventListener('DOMContentLoaded', function(){
                                     person:actor.name
                                     })   
                                 })
-                                element1.innerHTML=`<p>Agregado</p>`
+                                .then(response => response.json())
+                                .then(result => {
+                                    console.log(result);
+                                
+                                    if(result.message == "Agregado exitosamente"){
+                                        element1.innerHTML=`<p>Agregado</p>`
 
-                                // crear elemento para mostrar al actor en el área de agregado:
-                                const element2 = document.createElement('form');
-                                element2.setAttribute("action", "#") //ESTOY AQUI
-                                element2.innerHTML =`
-                                <li><input type="text" class="form-control" readonly="readonly" value="${actor.name}" style="background-color:#000428; color: white;"></li>
-                                <input class="eliminaractor"  type="submit" style = "display: block" value="&times; eliminar"></input>
-                                `
-                                element2.addEventListener('submit', (e)=>{
-                                    e.preventDefault
-                                    fetch(`/eliminar_star/${actor.id}/${id_movie}`,{method: 'PUT'}) 
-                                    element2.remove()
-                                })
-                                document.querySelector(`#actors${id_movie}`).prepend(element2);                                
-                                //.then(response => response.json())
-                                //.then(actors => {
+                                        // crear elemento para mostrar al actor en el área de agregado:
+                                        const element2 = document.createElement('form');
+                                        element2.setAttribute("action", "#") //ESTOY AQUI
+                                        element2.innerHTML =`
+                                        <li><input type="text" class="form-control" readonly="readonly" value="${actor.name}" style="background-color:#000428; color: white;"></li>
+                                        <input class="eliminaractor"  type="submit" style = "display: block" value="&times; eliminar"></input>
+                                        `
+                                        element2.addEventListener('submit', (e)=>{
+                                            e.preventDefault
+                                            fetch(`/eliminar_star/${actor.id}/${id_movie}`,{method: 'PUT'}) 
+                                            element2.remove()
+                                        })
+                                        // Agregamos el actor al area de actores del film 
+                                        document.querySelector(`#actors${id_movie}`).prepend(element2);
+                                    }
+                                    else{
+                                        element1.innerHTML=`<p style = "color: #dc3545; font-weight: bold;">Actor ya registrado en film</p>`;
+                                    }
+                                })                                   
                             })
-                            element0.appendChild(element1);
-                            document.querySelector(`#encontrado${id_movie}`).append(element0);
+                             // Agregamos el actor al area de actores por agregar
+                             element0.appendChild(element1);
+                             document.querySelector(`#encontrado${id_movie}`).append(element0);
                         })
                     })
                 })

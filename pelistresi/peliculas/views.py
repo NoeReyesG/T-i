@@ -158,9 +158,16 @@ def agregar_actor(request, movie_id):
             person = person[0]
             print(person)    
         if person:
-            star = Stars(movie=movie, person=person)
-            star.save()
-        return JsonResponse({"message": "Agregado exitosamente"}, status=204)
+            # Prevenimos que se agregue más de una vez, un actor que ya participa en la película.
+            actor = Stars.objects.filter(movie=movie, person=person)
+            if(actor):
+                print("no agregado")
+                return JsonResponse({"message": "actor agregado previamente"}, status=400)
+            else:
+                star = Stars(movie=movie, person=person)
+                print(star.person.name)
+                #star.save()
+        return JsonResponse({"message": "Agregado exitosamente"})
     else:
         return JsonResponse({
             "error": "Se requiere PUT request"
