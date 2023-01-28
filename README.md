@@ -11,6 +11,8 @@ La aplicación se creó usando Python, en especifico el framework Django, JavaSc
 
 Se creó una base de datos y se hizo la inserción de las películas estrenadas en 2022. Se conectó con SQLite para administrar la BD, pero de ser necesario se puede configurar para que se administre en MySQL o alguna otra, para este ejercicio no me pareciió necesario.
 
+La página soporta busqueda con multiples resultados, muestra hasta 5 coincidencias, no permite que se agregue más de una vez un mismo actor a una peliculas, entre otras características.  
+
 Se creó un proyecto Django y se realizaron las configuraciones iniciales, no entraré en detalles de esto ya que no es el fin. Los archivos que me parece son de interes estan en **tresi/tresi/pelistresi/peliculas**  en dónde se encuentra:
 
 * **models.py** el cuál incluye los modelos, es la creación de una base de datos a través de clases que equivalen a tablas.
